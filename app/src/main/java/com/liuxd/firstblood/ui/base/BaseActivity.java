@@ -1,8 +1,18 @@
 package com.liuxd.firstblood.ui.base;
 
+import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,6 +23,10 @@ import com.liuxd.firstblood.R;
 import com.liuxd.firstblood.util.AppManager;
 import com.liuxd.firstblood.util.LogUtil;
 import com.liuxd.firstblood.util.ToastUtil;
+import com.liuxd.firstblood.util.UIUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
@@ -141,5 +155,140 @@ public abstract class BaseActivity extends AppCompatActivity implements IBase {
         if (mCompositeSubscription != null)
             mCompositeSubscription.unsubscribe();
         LogUtil.d(TAG, "onDestroy");
+    }
+
+    /**
+     * 通过Class跳转界面
+     *
+     * @param cls 跳转的activity类名
+     */
+    public void startActivity(Class<?> cls) {
+        startActivity(cls, null);
+    }
+
+    /**
+     * 含有Bundle通过Class跳转界面
+     *
+     * @param cls    跳转的activity类名
+     * @param bundle bundle对象
+     */
+    public void startActivity(Class<?> cls, Bundle bundle) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivity(intent);
+    }
+
+    /**
+     * 权限申请
+     */
+    private static final int PERMISSION_REQUEST_CODE = 0;
+
+    protected void requestPermission(String[] needPermissions) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            List<String> permissions = new ArrayList<>();
+            for (String needPermission : needPermissions) {
+                if (ContextCompat.checkSelfPermission(this, needPermission) != PackageManager.PERMISSION_GRANTED) {
+                    permissions.add(needPermission);
+                }
+            }
+            if (permissions.size() > 0) {
+                String permissionName = UIUtil.getString(R.string.need_permission_tip);
+                boolean isShouldShowTips = false;
+                for (int i = 0; i < permissions.size(); i++) {
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions.get(i))) {
+                        if (i != 0)
+                            permissionName += "、";
+                        isShouldShowTips = true;
+                        switch (permissions.get(i)) {
+                            case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+                                permissionName += UIUtil.getString(R.string.write_permission);
+                                break;
+                            case Manifest.permission.ACCESS_COARSE_LOCATION:
+                                permissionName += UIUtil.getString(R.string.location_permission);
+                                break;
+                            case Manifest.permission.READ_PHONE_STATE:
+                                permissionName += UIUtil.getString(R.string.phone_state_permission);
+                                break;
+                            case Manifest.permission.CAMERA:
+                                permissionName += UIUtil.getString(R.string.camera_permission);
+                                break;
+                        }
+                    }
+                }
+                final String[] permissionArry = permissions.toArray(new String[permissions.size()]);
+                if (isShouldShowTips) {
+                    createDialog(permissionName, UIUtil.getString(R.string.apply_perimission)
+                            , (dialog, which) ->
+                                    ActivityCompat.requestPermissions(BaseActivity.this, permissionArry, PERMISSION_REQUEST_CODE));
+                } else {
+                    ActivityCompat.requestPermissions(this, permissionArry, PERMISSION_REQUEST_CODE);
+                }
+            } else {
+                onPermissionResult(true);
+            }
+        } else {
+            onPermissionResult(true);
+        }
+
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            String permissionName = UIUtil.getString(R.string.set_permission_tip);
+            boolean isPermissionAllow = true;
+            for (int i = 0; i < grantResults.length; i++) {
+                if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                    if (!isPermissionAllow)
+                        permissionName += "、";
+
+                    switch (permissions[i]) {
+                        case Manifest.permission.WRITE_EXTERNAL_STORAGE:
+                            permissionName += UIUtil.getString(R.string.write_permission);
+                            break;
+                        case Manifest.permission.ACCESS_COARSE_LOCATION:
+                            permissionName += UIUtil.getString(R.string.location_permission);
+                            break;
+                        case Manifest.permission.READ_PHONE_STATE:
+                            permissionName += UIUtil.getString(R.string.phone_state_permission);
+                            break;
+                        case Manifest.permission.CAMERA:
+                            permissionName += UIUtil.getString(R.string.camera_permission);
+                            break;
+                    }
+                    isPermissionAllow = false;
+                }
+            }
+            if (isPermissionAllow) {
+                onPermissionResult(true);
+            } else {
+                createDialog(permissionName, UIUtil.getString(R.string.I_know)
+                        , (dialog, which) ->
+                                onPermissionResult(false));
+            }
+
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+
+    }
+
+    private void createDialog(String message, String posButtonMsg, DialogInterface.OnClickListener listener) {
+        Dialog dialog = new AlertDialog.Builder(BaseActivity.this)
+                .setTitle(UIUtil.getString(R.string.prompt))
+                .setMessage(message)
+                .setPositiveButton(posButtonMsg, listener)
+                .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+
+    public void onPermissionResult(boolean isAllow) {
+
     }
 }

@@ -1,11 +1,13 @@
 package com.liuxd.firstblood.ui.home;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.SparseArray;
-import android.widget.RadioGroup;
+import android.view.MenuItem;
 
 import com.liuxd.firstblood.R;
 import com.liuxd.firstblood.constant.Constant;
@@ -20,13 +22,13 @@ import butterknife.BindView;
  */
 
 public class HomeActivity extends BaseActivity {
-    @BindView(R.id.rg_home)
-    RadioGroup mRgHome;
+//    @BindView(R.id.rg_home)
+//    RadioGroup mRgHome;
 
-//    @BindView(R.id.bottom_nav)
-//    BottomNavigationView mBottomNav;
+    @BindView(R.id.bottom_nav)
+    BottomNavigationView mBottomNav;
 
-    //    private MenuItem mLastItem;
+    private MenuItem mLastItem;
     private SparseArray<BaseFragment> fragments;
     private FragmentManager manager;
     private int currentIndex = 0;
@@ -39,56 +41,56 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void init(@Nullable Bundle savedInstanceState) {
         initFragments();
-//        mBottomNav.setOnNavigationItemSelectedListener(
-//                new BottomNavigationView.OnNavigationItemSelectedListener() {
-//                    @Override
-//                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//                        if (mLastItem != item) {
-//                            mLastItem = item;
-//                            switch (item.getItemId()) {
-//                                case R.id.item_news:
-//                                    showFragment(0);
-//                                    break;
-//                                case R.id.item_joke:
-//                                    showFragment(1);
-//                                    break;
-//                                case R.id.item_cardNo:
-//                                    showFragment(2);
-//                                    break;
-//                                case R.id.item_robot:
-//                                    showFragment(3);
-//                                    break;
-//                            }
-//                            return true;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//                }
-//        );
+        mBottomNav.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        if (mLastItem != item) {
+                            mLastItem = item;
+                            switch (item.getItemId()) {
+                                case R.id.item_news:
+                                    showFragment(0);
+                                    break;
+                                case R.id.item_joke:
+                                    showFragment(1);
+                                    break;
+                                case R.id.item_cardNo:
+                                    showFragment(2);
+                                    break;
+                                case R.id.item_robot:
+                                    showFragment(3);
+                                    break;
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+        );
         if (savedInstanceState != null) {
             currentIndex = savedInstanceState.getInt(Constant.BundleName.CURRENT_INDEX_HOME, 0);
         }
         showFragment(currentIndex);
-        mRgHome.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.rb_news:
-                        showFragment(0);
-                        break;
-                    case R.id.rb_joke:
-                        showFragment(1);
-                        break;
-                    case R.id.rb_cardNo:
-                        showFragment(2);
-                        break;
-                    case R.id.rb_robot:
-                        showFragment(3);
-                        break;
-                }
-            }
-        });
+//        mRgHome.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(RadioGroup group, int checkedId) {
+//                switch (checkedId) {
+//                    case R.id.rb_news:
+//                        showFragment(0);
+//                        break;
+//                    case R.id.rb_joke:
+//                        showFragment(1);
+//                        break;
+//                    case R.id.rb_cardNo:
+//                        showFragment(2);
+//                        break;
+//                    case R.id.rb_robot:
+//                        showFragment(3);
+//                        break;
+//                }
+//            }
+//        });
     }
 
     private void initFragments() {

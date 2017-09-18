@@ -6,6 +6,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -53,6 +54,7 @@ public class NewsDetailsActivity extends BaseActivity {
         mIvNews.setTransitionName(Constant.Parameters.TRANSITION_NEWS_IMG);
         ImageLoadUtil.getInstance().load(this, getIntent().getStringExtra(Constant.BundleName.URL_IMAGE_NEWS), mIvNews);
         setSupportActionBar(mToolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mToolbarLayout.setTitle(getIntent().getStringExtra(Constant.BundleName.TITLE_NEWS));
         WebSettings settings = mWvNews.getSettings();
@@ -127,5 +129,18 @@ public class NewsDetailsActivity extends BaseActivity {
         super.onDestroy();
         if (mWvNews != null)
             mWvNews.destroy();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            if (mWvNews.canGoBack()) {
+                mWvNews.goBack();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

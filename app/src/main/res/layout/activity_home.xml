@@ -13,47 +13,48 @@
 
     </FrameLayout>
 
-    <!--<android.support.design.widget.BottomNavigationView-->
-    <!--android:id="@+id/bottom_nav"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--asura:itemBackground="@color/nav_bg"-->
-    <!--asura:itemIconTint="@color/item_color"-->
-    <!--asura:itemTextColor="@color/item_color"-->
-    <!--asura:menu="@menu/menu_bottom_nav">-->
-
-    <!--</android.support.design.widget.BottomNavigationView>-->
-    <RadioGroup
-        android:id="@+id/rg_home"
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/nav_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        asura:itemBackground="@color/nav_bg"
+        asura:itemIconTint="@color/item_color"
+        asura:itemTextColor="@color/item_color"
+        asura:menu="@menu/menu_bottom_nav">
 
-        <RadioButton
-            android:id="@+id/rb_news"
-            style="@style/style_tab"
-            android:checked="true"
-            android:drawableTop="@drawable/selector_tab_news"
-            android:text="@string/item_news"/>
+    </android.support.design.widget.BottomNavigationView>
 
-        <RadioButton
-            android:id="@+id/rb_joke"
-            style="@style/style_tab"
-            android:drawableTop="@drawable/selector_tab_joke"
-            android:text="@string/item_joke"/>
+    <!--<RadioGroup-->
+        <!--android:id="@+id/rg_home"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@color/nav_bg"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:orientation="horizontal">-->
 
-        <RadioButton
-            android:id="@+id/rb_cardNo"
-            style="@style/style_tab"
-            android:drawableTop="@drawable/selector_tab_card_no"
-            android:text="@string/item_cardNo"/>
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_news"-->
+            <!--style="@style/style_tab"-->
+            <!--android:checked="true"-->
+            <!--android:drawableTop="@drawable/selector_tab_news"-->
+            <!--android:text="@string/item_news"/>-->
 
-        <RadioButton
-            android:id="@+id/rb_robot"
-            style="@style/style_tab"
-            android:drawableTop="@drawable/selector_tab_robot"
-            android:text="@string/item_robot"/>
-    </RadioGroup>
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_joke"-->
+            <!--style="@style/style_tab"-->
+            <!--android:drawableTop="@drawable/selector_tab_joke"-->
+            <!--android:text="@string/item_joke"/>-->
+
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_cardNo"-->
+            <!--style="@style/style_tab"-->
+            <!--android:drawableTop="@drawable/selector_tab_card_no"-->
+            <!--android:text="@string/item_cardNo"/>-->
+
+        <!--<RadioButton-->
+            <!--android:id="@+id/rb_robot"-->
+            <!--style="@style/style_tab"-->
+            <!--android:drawableTop="@drawable/selector_tab_robot"-->
+            <!--android:text="@string/item_robot"/>-->
+    <!--</RadioGroup>-->
 </LinearLayout>

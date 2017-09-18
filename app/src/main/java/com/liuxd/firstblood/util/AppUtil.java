@@ -59,7 +59,7 @@ public class AppUtil {
     /**
      * 获取meta data信息
      */
-    public static String getMetadata(Context context, String name) {
+    public static String getMetaData(Context context, String name) {
         try {
             ApplicationInfo appInfo = context.getPackageManager().getApplicationInfo(
                     context.getPackageName(), PackageManager.GET_META_DATA);

@@ -15,6 +15,6 @@ public class OnLoadMoreListener extends RecyclerView.OnScrollListener {
         super.onScrolled(recyclerView, dx, dy);
     }
 
-    int lastVisiableItemPos = mLayoutManager.findLastVisibleItemPosition();
+    int lastVisibleItemPos = mLayoutManager.findLastVisibleItemPosition();
 
 }
