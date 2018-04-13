@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">FirstBlood</string>
     <!--首页-->
-    <string name="item_news">头条</string>
+    <string name="item_news">吞吞吐吐</string>
     <string name="item_joke">笑话</string>
     <string name="item_cardNo">身份证</string>
     <string name="item_robot">机器人</string>
@@ -40,6 +40,7 @@
     <string name="area">地区：</string>
     <string name="sex">性别：</string>
     <string name="birthday">出生日期：</string>
+    <string name="state">状态：</string>
     <!--Common-->
     <string name="search">查询</string>
     <string name="searchResult">查询结果</string>

@@ -1,5 +1,6 @@
 package com.liuxd.firstblood.ui.base;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
@@ -39,15 +40,20 @@ public abstract class BaseFragment<P extends BasePresenter> extends Fragment imp
         mCompositeSubscription.add(subscriber);
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            if (context instanceof Activity) {
-                onAttachToContext(context);
-            }
-        }
         onAttachToContext(context);
+    }
+
+    @SuppressWarnings("deprecated")
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            onAttachToContext(activity);
+        }
     }
 
     /**

@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.antfortune.freeline'
 
 def versionMajor = 1
 def versionMinor = 0
@@ -11,14 +12,15 @@ def releaseTime() {
 }
 
 android {
-    compileSdkVersion 24
-    buildToolsVersion "24.0.3"
+    compileSdkVersion 27
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "com"
         minSdkVersion 15
-        targetSdkVersion 24
+        targetSdkVersion 27
         versionCode baseVersionCode
         versionName "$baseVersionName"
+        flavorDimensions "channel"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
@@ -44,11 +46,11 @@ android {
             signingConfig signingConfigs.release//打包命令行：gradlew assembleRelease
             //更改apk生成名字
             applicationVariants.all { variant ->
-                variant.outputs.each { output ->
+                variant.outputs.all { output ->
                     def outputFile = output.outputFile
                     if (outputFile != null && outputFile.name.endsWith('.apk')) {
-                        def name = "FirstBlood_v${defaultConfig.versionName}_${releaseTime()}${variant.flavorName}.apk"
-                        output.outputFile = file(name)
+                        def fileName = "FirstBlood_release_v${variant.productFlavors[0].versionName}_${releaseTime()}${variant.productFlavors[0].name}.apk"
+                        outputFileName = new File("../../outputs/apks", fileName)
                     }
                 }
             }
@@ -56,12 +58,21 @@ android {
     }
     productFlavors {
         _debug {
+            dimension "channel"
             applicationIdSuffix "liuxd.firstblood.debug"
             minSdkVersion 21
         }
         _release {
+            dimension "channel"
             applicationIdSuffix "liuxd.firstblood"
         }
+    }
+    lintOptions {
+        abortOnError false
+    }
+    freeline{
+        hack true
+        productFlavor '_debug'
     }
 }
 
@@ -71,9 +82,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.android.support:recyclerview-v7:24.2.1'
-    compile 'com.android.support:design:24.2.1'
+    compile 'com.android.support:appcompat-v7:27.1.1'
+    compile 'com.android.support:recyclerview-v7:27.1.1'
+    compile 'com.android.support:design:27.1.1'
     compile 'com.orhanobut:logger:1.15'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -94,15 +105,4 @@ dependencies {
 //    compile 'com.r0adkll:slidableactivity:2.0.5'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4'
     compile 'com.tencent.bugly:crashreport:2.3.1'
-}
-
-android.applicationVariants.all { variant ->
-    variant.outputs.each { output ->
-        // 删除unaligned apk
-        if (output.zipAlign != null) {
-            output.zipAlign.doLast {
-                output.zipAlign.inputFile.delete()
-            }
-        }
-    }
 }

@@ -10,4 +10,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="机器人问询"/>
+    <Button
+        android:id="@+id/btn_speak"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="说话"/>
 </LinearLayout>

@@ -9,6 +9,8 @@ public class IdCard {
     private String area;
     private String sex;
     private String birthday;
+    private String res;
+    private String tips;
 
     public String getArea() {
         return area;
@@ -32,5 +34,21 @@ public class IdCard {
 
     public void setBirthday(String birthday) {
         this.birthday = birthday;
+    }
+
+    public String getRes() {
+        return res;
+    }
+
+    public void setRes(String res) {
+        this.res = res;
+    }
+
+    public String getTips() {
+        return tips;
+    }
+
+    public void setTips(String tips) {
+        this.tips = tips;
     }
 }
