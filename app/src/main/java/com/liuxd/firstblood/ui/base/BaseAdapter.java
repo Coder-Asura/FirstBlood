@@ -1,13 +1,12 @@
 package com.liuxd.firstblood.ui.base;
 
-import android.animation.Animator;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.LinearInterpolator;
-
-import com.liuxd.firstblood.widget.ScaleInAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 
 import java.util.List;
 
@@ -22,10 +21,11 @@ import java.util.List;
 public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder> {
     private List<T> mDatas;
     private int mLayoutId;
+    private int mLastShownAnimationPosition;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
-    private ScaleInAnimation mScaleInAnimation = new ScaleInAnimation();
-    private LinearInterpolator mInterpolator = new LinearInterpolator();
+//    private ScaleInAnimation mScaleInAnimation = new ScaleInAnimation();
+//    private LinearInterpolator mInterpolator = new LinearInterpolator();
 
     /**
      * @param datas    数据源
@@ -44,8 +44,9 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
 
     @Override
     public void onBindViewHolder(final BaseViewHolder holder, int position) {
-        convert(holder, mDatas.get(position));
-        addAnimation(holder);
+        convert(holder, mDatas.get(holder.getAdapterPosition()));
+//        addAnimation(holder);
+        setAnimation(holder.itemView, holder.getAdapterPosition());
         //设置点击事件
         if (mOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,15 +88,24 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<BaseViewHolder
         return mDatas;
     }
 
-    private void addAnimation(BaseViewHolder holder) {
-        Animator[] animators = this.mScaleInAnimation.getAnimators(holder.itemView);
-        for (int i = 0; i < animators.length; i++) {
-            Animator anim = animators[i];
-            anim.setDuration(100L).start();
-            anim.setInterpolator(mInterpolator);
-        }
 
+    private void setAnimation(@NonNull View viewToAnimate, int position) {
+        if (position > mLastShownAnimationPosition) {
+            Animation animation = AnimationUtils.loadAnimation(viewToAnimate.getContext(),
+                    android.R.anim.slide_in_left);
+            viewToAnimate.startAnimation(animation);
+            mLastShownAnimationPosition = position;
+        }
     }
+
+//    private void addAnimation(BaseViewHolder holder) {
+//        Animator[] animators = this.mScaleInAnimation.getAnimators(holder.itemView);
+//        for (int i = 0; i < animators.length; i++) {
+//            Animator anim = animators[i];
+//            anim.setDuration(100L).start();
+//            anim.setInterpolator(mInterpolator);
+//        }
+//    }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.mOnItemClickListener = onItemClickListener;

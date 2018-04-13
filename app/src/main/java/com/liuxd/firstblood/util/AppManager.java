@@ -70,7 +70,7 @@ public class AppManager {
         activityList.clear();
     }
 
-    public void finishToActivity(Class activity) {
+    public void finishToActivity(Class<Activity> activity) {
         if (activityList == null || activityList.size() == 0)
             return;
         for (int i = activityList.size() - 1; i >= 0; i--) {

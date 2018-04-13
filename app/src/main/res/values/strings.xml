@@ -52,4 +52,14 @@
     <string name="no_network">没网啊小伙，在山区耍猴吗？</string>
     <string name="set_network">设置网络</string>
     <string name="retry">点击重试</string>
+    <string name="prompt">提示</string>
+    <string name="I_know">好的</string>
+    <!--权限-->
+    <string name="write_permission">读写权限</string>
+    <string name="location_permission">定位权限</string>
+    <string name="phone_state_permission">读取手机状态信息权限</string>
+    <string name="camera_permission">相机权限</string>
+    <string name="apply_perimission">申请</string>
+    <string name="need_permission_tip">为了程序正常运行，请允许以下权限:</string>
+    <string name="set_permission_tip">为了程序正常运行,请在设置中打开以下权限:</string>
 </resources>
